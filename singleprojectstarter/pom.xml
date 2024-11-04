@@ -5,21 +5,29 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.13</version>
+		<version>3.1.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.mercadona.framework.cna</groupId>
+	<groupId>com.openrewrite.demo</groupId>
 	<artifactId>singleprojectstarter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>singleprojectstarter</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<!--This is excluded due to CVE <X> and will be removed when we upgrade the next version is available.-->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>3.1.1</version>
+			<classifier></classifier>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>

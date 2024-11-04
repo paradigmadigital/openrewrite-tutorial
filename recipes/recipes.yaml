@@ -1,0 +1,61 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.openrewrite.demo.Recipe1
+displayName: Change Maven Parent Pom
+recipeList:
+  - org.openrewrite.maven.ChangeParentPom:
+      oldGroupId: org.springframework.boot
+      newGroupId: org.springframework.boot
+      oldArtifactId: spring-boot-starter-parent
+      newArtifactId: spring-boot-starter-parent
+      newVersion: 2.7.13
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-parent
+      newVersion: 3.1.0  
+---      
+type: specs.openrewrite.org/v1beta/recipe
+name: com.openrewrite.demo.Recipe2
+displayName: Update java property to 17
+recipeList:
+  - org.openrewrite.maven.AddProperty:
+      key: java.version
+      value: 17
+      preserveExistingValue: false
+      trustParent: false 
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.openrewrite.demo.AddWebNature
+displayName: Add Web nature
+recipeList:
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-web
+      version: 3.1.0
+      onlyIfUsing: org.springframework.boot.*
+      scope: compile
+      acceptTransitive: true     
+---            
+type: specs.openrewrite.org/v1beta/recipe
+name: com.openrewrite.demo.WebErrorWorkAround
+displayName: Workaround for Web error on latest version
+recipeList:
+  - org.openrewrite.maven.RemoveDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-web
+      scope: compile
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-web
+      version: 3.1.1
+      scope: runtime
+      onlyIfUsing: org.springframework.boot.test.context.*
+      type: jar
+      classifier: ''
+      optional: null
+      acceptTransitive: false 
+  - org.openrewrite.maven.AddCommentToMavenDependency:
+      xPath: /project/dependencies/dependency
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-web
+      commentText: This is excluded due to CVE <X> and will be removed when we upgrade the next version is available.        
